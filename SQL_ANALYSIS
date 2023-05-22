@@ -1,0 +1,227 @@
+SELECT 
+  *
+FROM
+  `my-data-353523.Marijuana_Arrests.Arrests`;
+
+
+-- Number of Cases
+SELECT 
+  COUNT(int64_field_0) AS number_of_white_people
+FROM
+  `my-data-353523.Marijuana_Arrests.Arrests`;
+
+
+-- Number Of White People Arrested
+SELECT 
+  COUNT(int64_field_0)AS number_of_white_people
+FROM
+  `my-data-353523.Marijuana_Arrests.Arrests`
+WHERE
+  colour LIKE "White"; 
+
+
+-- Number OF Black People Arrested
+SELECT
+  COUNT(int64_field_0) AS number_of_black_people
+FROM
+  `my-data-353523.Marijuana_Arrests.Arrests`
+WHERE
+  colour LIKE "Black"; 
+
+
+-- Percentage OF Black people arrested Against total Arrested
+SELECT 
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "Black")/Count(int64_field_0)* 100 AS Percentage_of_BlackArrests
+FROM `my-data-353523.Marijuana_Arrests.Arrests`;
+
+
+-- Percentage OF White people arrested Against total Arrested
+SELECT 
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "White")/Count(int64_field_0)* 100 AS Percentage_of_WhiteArrests
+FROM `my-data-353523.Marijuana_Arrests.Arrests`;
+       
+
+-- Number OF White People with More than one Arrests released
+SELECT
+  COUNT(int64_field_0) AS white_people_released_with_more_than_one_arrest
+FROM
+  `my-data-353523.Marijuana_Arrests.Arrests`
+WHERE
+  colour LIKE "White"
+  AND released IS TRUE
+  AND checks > 1
+LIMIT
+  1000; 
+
+
+-- Number OF Black People with More than one Arrests released
+SELECT
+  COUNT(int64_field_0) AS black_people_released_with_more_than_one_arrest
+FROM
+  `my-data-353523.Marijuana_Arrests.Arrests`
+WHERE
+  colour LIKE "Black"
+  AND released IS TRUE
+  AND checks > 1
+LIMIT
+  1000;
+
+
+-- Percentage of Black Male Arrested vs Black Female Arrested 16 and above
+SELECT 
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "Black" and sex = "Male" and age >= 16)/Count(int64_field_0)* 100 AS Percentage_of_Black_Male_Arrests,
+
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "Black" and sex = "Female" and age >= 16)/Count(int64_field_0)* 100 AS Percentage_of_Black_female_Arrests
+FROM `my-data-353523.Marijuana_Arrests.Arrests`;
+
+
+-- Percentage of White Male Arrested vs White Female Arrested 16 and above
+SELECT 
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "White" and sex = "Male" and age >= 16)/Count(int64_field_0)* 100 AS Percentage_of_White_Male_Arrests,
+
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "White" and sex = "Female" and age >= 16)/Count(int64_field_0)* 100 AS Percentage_of_White_female_Arrests
+FROM `my-data-353523.Marijuana_Arrests.Arrests`
+;
+
+
+--Percentage of White and black male and female arrested over 16
+SELECT
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "Black" and sex = "Male" and age >= 16)/Count(int64_field_0)* 100 AS Percentage_of_Black_Male_Arrests,
+ 
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "Black" and sex = "Female" and age >= 16)/Count(int64_field_0)* 100 AS Percentage_of_Black_female_Arrests,
+
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "White" and sex = "Male" and age >= 16)/Count(int64_field_0)* 100 AS Percentage_of_White_Male_Arrests,
+
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "White" and sex = "Female" and age >= 16)/Count(int64_field_0)* 100 AS Percentage_of_White_female_Arrests
+
+FROM `my-data-353523.Marijuana_Arrests.Arrests`;
+
+
+--Percentage of White and black male and female arrested under 16
+SELECT
+
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "Black" and sex = "Male" and age < 16)/Count(int64_field_0)* 100 AS Percentage_of_Black_Male_Arrests,
+ 
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "Black" and sex = "Female" and age < 16)/Count(int64_field_0)* 100 AS Percentage_of_Black_female_Arrests,
+
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "White" and sex = "Male" and age < 16)/Count(int64_field_0)* 100 AS Percentage_of_White_Male_Arrests,
+
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "White" and sex = "Female" and age < 16)/Count(int64_field_0)* 100 AS Percentage_of_White_female_Arrests
+
+FROM `my-data-353523.Marijuana_Arrests.Arrests`;
+
+
+-- Number of Released
+SELECT 
+  COUNTIF(colour = "Black" AND released = true) AS Number_black_Released,
+  COUNTIF(colour = "Black" AND released = false) AS Number_black_Not_Released,
+  COUNTIF(colour = "White" AND released = true) AS Number_white_Released,
+  COUNTIF(colour = "White" AND released = false) AS Number_white_Not_Released
+FROM 
+  `my-data-353523.Marijuana_Arrests.Arrests`;
+
+
+-- Number of Released with over one arrests
+SELECT 
+  COUNTIF(colour = "Black" AND checks > 1 AND released = true) AS Number_black_Released,
+  COUNTIF(colour = "Black" AND checks >1 AND released = false) AS Number_black_Not_Released,
+  COUNTIF(colour = "White" AND checks >1 AND released = true) AS Number_white_Released,
+  COUNTIF(colour = "White" AND checks >1 AND released = false) AS Number_white_Not_Released
+FROM 
+  `my-data-353523.Marijuana_Arrests.Arrests`;
+
+
+-- Number of Release Status with less that one arrests
+
+SELECT 
+  COUNTIF(colour = "Black" AND checks <= 1 AND released = true) AS Number_black_Released,
+  COUNTIF(colour = "Black" AND checks <= 1 AND released = false) AS Number_black_Not_Released,
+  COUNTIF(colour = "White" AND checks <= 1 AND released = true) AS Number_white_Released,
+  COUNTIF(colour = "White" AND checks <= 1 AND released = false) AS Number_white_Not_Released
+FROM 
+  `my-data-353523.Marijuana_Arrests.Arrests`;
+
+
+-- Number of Released citizens and non citizens
+SELECT 
+  COUNTIF(colour = "Black" AND released = true AND citizen = true) AS Number_black_citizens_Released,
+  COUNTIF(colour = "Black" AND released = false AND citizen = true) AS Number_black_citizen_Not_Released,
+  COUNTIF(colour = "Black" AND released = true AND citizen = false) AS Number_black_non_citizens_Released,
+  COUNTIF(colour = "Black" AND released = false AND citizen = false) AS Number_black_non_citizen_Not_Released,
+ 
+  COUNTIF(colour = "White" AND released = true AND citizen = true) AS Number_White_citizens_Released,
+  COUNTIF(colour = "White" AND released = false AND citizen = true) AS Number_White_citizen_Not_Released,
+  COUNTIF(colour = "White" AND released = true AND citizen = false) AS Number_White_non_citizens_Released,
+  COUNTIF(colour = "White" AND released = false AND citizen = false) AS Number_White_non_citizen_Not_Released
+FROM 
+  `my-data-353523.Marijuana_Arrests.Arrests`
+GROUP BY sex;
+
+
+--Percentage of White Arrests vs Black Arrests
+SELECT 
+
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "White")/Count(int64_field_0)* 100 AS Percentage_of_WhiteArrests,
+
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "Black")/Count(int64_field_0)* 100 AS Percentage_of_BlackArrests
+
+FROM `my-data-353523.Marijuana_Arrests.Arrests`;
+
+
+--Percentage of Black Release and White Release
+SELECT 
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "White" AND released = true)/Count(int64_field_0)* 100 AS Percentage_of_WhiteArrests_released,
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "White"AND released = false)/Count(int64_field_0)* 100 AS Percentage_of_WhiteArrests_not_released,
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "Black"AND released = true)/Count(int64_field_0)* 100 AS Percentage_ofBlackArrests_released,
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "Black"AND released = false)/Count(int64_field_0)* 100 AS Percentage_of_BlackArrests_not_released,
+FROM `my-data-353523.Marijuana_Arrests.Arrests`;
+
+
+--Percentage of Black and White Release over one arrests
+SELECT 
+
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "White" AND released = true AND checks >=1)/Count(int64_field_0)* 100 AS Percentage_of_WhiteArrests_released_with_one_or_more_arrests,
+
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "White"AND released = false AND checks >=1)/Count(int64_field_0)* 100 AS Percentage_of_WhiteArrests_not_released_with_one_or_more_arrests,
+
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "Black" AND released = true AND checks >=1)/Count(int64_field_0)* 100 AS Percentage_of_BlackArrests_released_with_one_or_more_arrests,
+
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "Black"AND released = false AND checks >=1)/Count(int64_field_0)* 100 AS Percentage_of_BlackArrests_not_released_with_one_or_more_arrests,
+
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "White" AND released = true AND checks <1)/Count(int64_field_0)* 100 AS Percentage_of_WhiteArrests_released_with_one_or_more_arrests,
+
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "White"AND released = false AND checks <1)/Count(int64_field_0)* 100 AS Percentage_of_WhiteArrests_not_released_with_one_or_more_arrests,
+
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "Black" AND released = true AND checks <1)/Count(int64_field_0)* 100 AS Percentage_of_BlackArrests_released_with_one_or_more_arrests,
+
+(SELECT COUNT(int64_field_0)
+FROM `my-data-353523.Marijuana_Arrests.Arrests` WHERE colour = "Black"AND released = false AND checks <1)/Count(int64_field_0)* 100 AS Percentage_of_BlackArrests_not_released_with_one_or_more_arrests
+
+FROM `my-data-353523.Marijuana_Arrests.Arrests`;
